@@ -6,9 +6,9 @@ import { withLayout } from "../src/layout/Layout";
 import { useGetTopChartsQuery } from "../src/redux/services/shazamCore";
 
 const TopArtists = () => {
-  const { data, isLoading, error } = useGetTopChartsQuery("");
+  const { data, isLoading, isError } = useGetTopChartsQuery("");
   if (isLoading) return <Loader size="lg" />;
-  if (error) return <Error />;
+  if (isError) return <Error />;
 
   return (
     <>
@@ -21,9 +21,9 @@ const TopArtists = () => {
           data.map((song) => (
             <Artistcard
               key={song.key}
-              image={song.images.background}
-              name={song.subtitle}
-              artistId={song.artists[0].adamid}
+              image={song?.images?.background}
+              name={song?.subtitle}
+              artistId={song?.artists[0]?.adamid}
             />
           ))}
       </div>

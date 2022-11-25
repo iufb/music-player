@@ -13,7 +13,7 @@ const Artistcard = ({
     <Link href={`/artist/${artistId}`}>
       <a href="">
         <div
-          className={`${className} w-[250px] backdrop-blur-sm bg-white/5 px-5 py-5 rounded-md flex flex-col justify-center items-center cursor-pointer gap-y-4 text-center`}
+          className={`${className} w-[250px] backdrop-blur-sm bg-white/5 px-5 py-5 rounded-md flex flex-col justify-center items-center cursor-pointer gap-y-4 text-center animate-slide-up`}
           {...props}
         >
           <Image

@@ -9,7 +9,6 @@ export const Song = ({
   song,
   i,
   data,
-  topChart,
   ...props
 }: SongProps): JSX.Element => {
   const { activeSong, isPlaying } = useAppSelector((state) => state.player);

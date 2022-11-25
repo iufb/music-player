@@ -14,7 +14,7 @@ const Songcard = ({
   return (
     <div
       {...props}
-      className="w-[250px] backdrop-blur-sm bg-white/5 px-5 py-5 rounded-md flex flex-col justify-center items-center cursor-pointer"
+      className="w-[250px] backdrop-blur-sm bg-white/5 px-5 py-5 rounded-md flex flex-col justify-center items-center cursor-pointer animate-slide-up"
     >
       <div className="relative w-full h-56 group">
         <div

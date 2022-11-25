@@ -2,6 +2,10 @@
 const nextConfig = {
   reactStrictMode: true,
   swcMinify: true,
+
+  typescript: {
+    ignoreBuildErrors: true,
+  },
   images: {
     domains: [
       "is1-ssl.mzstatic.com",
