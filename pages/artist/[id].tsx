@@ -1,10 +1,8 @@
 import Head from "next/head";
 import Image from "next/image";
 import { useRouter } from "next/router";
-import { title } from "process";
 import { Error, Loader } from "../../src/components";
 import { Song } from "../../src/components/Song/Song";
-import { SongTitle } from "../../src/components/SongTitle/SongTitle";
 import { withLayout } from "../../src/layout/Layout";
 import {
   useGetArtistDetailsQuery,
@@ -17,13 +15,13 @@ const ArtistPage = () => {
   const {
     data: artistDetails,
     isLoading,
-    error,
+    isError,
   } = useGetArtistDetailsQuery(id);
   const name = artistDetails?.artists[id].attributes.name;
   const { data: search } = useGetSongsBySearchQuery(name);
 
   if (isLoading && !isReady) return <Loader size="lg" />;
-  if (error) return <Error />;
+  if (isError) return <Error />;
   return (
     <>
       <Head>

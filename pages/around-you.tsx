@@ -9,7 +9,7 @@ import { useGetSongsByCountryQuery } from "../src/redux/services/shazamCore";
 const AroundYou = () => {
   const [country, setCountry] = useState<string>("12");
   const [isFetching, setIsFetching] = useState<boolean>(true);
-  const { data, isLoading, error } = useGetSongsByCountryQuery(country);
+  const { data, isLoading, isError } = useGetSongsByCountryQuery(country);
   const { isPlaying, activeSong } = useAppSelector((state) => state.player);
   useEffect(() => {
     axios
@@ -21,7 +21,7 @@ const AroundYou = () => {
       .finally(() => setIsFetching(false));
   }, [country]);
   if (isLoading && isFetching) return <Loader size="lg" />;
-  if (error) return <Error />;
+  if (isError) return <Error />;
 
   return (
     <>

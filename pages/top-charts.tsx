@@ -6,10 +6,10 @@ import { withLayout } from "../src/layout/Layout";
 import { useGetTopChartsQuery } from "../src/redux/services/shazamCore";
 
 const TopCharts = () => {
-  const { data, isLoading, error } = useGetTopChartsQuery("");
+  const { data, isLoading, isError } = useGetTopChartsQuery("");
   const { isPlaying, activeSong } = useAppSelector((state) => state.player);
   if (isLoading) return <Loader size="lg" />;
-  if (error) return <Error />;
+  if (isError) return <Error />;
   return (
     <>
       <Head>

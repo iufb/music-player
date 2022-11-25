@@ -13,14 +13,14 @@ import {
 const SongPage = () => {
   const { query } = useRouter();
   const id = query.id;
-  const { data: songDetails, isLoading, error } = useGetSongDetailsQuery(id);
+  const { data: songDetails, isLoading, isError } = useGetSongDetailsQuery(id);
   const {
     data: relatedSongs,
     isLoading: isFetching,
-    error: relatedSongsError,
+    isError: relatedSongsisError,
   } = useGetRelatedSongsQuery(id);
   if (isLoading && isFetching) return <Loader size="lg" />;
-  if (error && relatedSongsError) return <Error />;
+  if (isError && relatedSongsisError) return <Error />;
   return (
     <>
       <Head>

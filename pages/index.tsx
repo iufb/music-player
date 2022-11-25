@@ -11,11 +11,11 @@ const Home: NextPage = () => {
   const { isPlaying, activeSong } = useAppSelector((state) => state.player);
   const { genreListId } = useAppSelector((state) => state.player);
   const dispatch = useAppDispatch();
-  const { data, isLoading, error } = useGetSongsByGenreQuery(
+  const { data, isLoading, isError } = useGetSongsByGenreQuery(
     genreListId || "POP"
   );
   if (isLoading) return <Loader size="lg" />;
-  if (error) return <Error />;
+  if (isError) return <Error />;
   const genreTitle = genres.find(({ value }) => value === genreListId)?.title;
   return (
     <>

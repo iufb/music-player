@@ -11,10 +11,10 @@ const Search = () => {
   const { query } = useRouter();
   const searchValue = query["search-field"];
   const { isPlaying, activeSong } = useAppSelector((state) => state.player);
-  const { data, isLoading, error } = useGetSongsBySearchQuery(searchValue);
+  const { data, isLoading, isError } = useGetSongsBySearchQuery(searchValue);
   const name = data?.artists.hits[0].artist.name;
   if (isLoading) return <Loader size="lg" />;
-  if (error) return <Error />;
+  if (isError) return <Error />;
   return (
     <>
       <Head>

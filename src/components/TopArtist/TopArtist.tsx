@@ -9,11 +9,11 @@ import { Error } from "../Error/Error";
 import { FreeMode } from "swiper";
 import Link from "next/link";
 export const TopArtist = () => {
-  const { data, isLoading, error } = useGetTopChartsQuery("");
+  const { data, isLoading, isError } = useGetTopChartsQuery("");
   const TopArtists = data && data.slice(0, 5);
   const { push } = useRouter();
   if (isLoading) return <Loader size="md" />;
-  if (error) return <Error />;
+  if (isError) return <Error />;
   return (
     <div className="space-y-4 ">
       <div className="w-full flex justify-between px-4">
