@@ -1,11 +1,16 @@
-import type { NextPage } from "next";
+import type { GetServerSideProps, NextPage } from "next";
 import Head from "next/head";
 import { Error, Loader, Page } from "../src/components";
 import { genres } from "../src/helpers/helpers";
 import { useAppDispatch, useAppSelector } from "../src/helpers/hooks/redux";
 import { withLayout } from "../src/layout/Layout";
 import { selectGenreListId } from "../src/redux/features/PlayerSlice";
-import { useGetSongsByGenreQuery } from "../src/redux/services/shazamCore";
+import {
+  getRunningOperationPromises,
+  getSongsByGenre,
+  useGetSongsByGenreQuery,
+} from "../src/redux/services/shazamCore";
+import { wrapper } from "../src/redux/store";
 
 const Home: NextPage = () => {
   const { isPlaying, activeSong } = useAppSelector((state) => state.player);
@@ -49,3 +54,15 @@ const Home: NextPage = () => {
 };
 
 export default withLayout(Home);
+
+export const getServerSideProps: GetServerSideProps =
+  wrapper.getServerSideProps((store) => async (ctx) => {
+    const genre = ctx.params?.genre;
+    if (typeof genre === "string") {
+      store.dispatch(getSongsByGenre.initiate(genre));
+    }
+    await Promise.all(getRunningOperationPromises());
+    return {
+      props: {},
+    };
+  });

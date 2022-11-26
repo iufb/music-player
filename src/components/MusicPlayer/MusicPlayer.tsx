@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { useAppDispatch, useAppSelector } from "../../helpers/hooks/redux";
+import { useLocalStorage } from "../../helpers/hooks/useLocalStorage";
 import {
   nextSong,
   playPause,
@@ -16,8 +17,8 @@ const MusicPlayer = () => {
     useAppSelector((state) => state.player);
   const [duration, setDuration] = useState<number>(0);
   const [seekTime, setSeekTime] = useState<number>(0);
-  const [appTime, setAppTime] = useState<number>(0);
-  const [volume, setVolume] = useState<number>(0);
+  const [appTime, setAppTime] = useLocalStorage(0, "appTime");
+  const [volume, setVolume] = useLocalStorage(0, "volume");
   const [repeat, setRepeat] = useState<boolean>(false);
   const [shuffle, setShuffle] = useState<boolean>(false);
   const dispatch = useAppDispatch();
@@ -30,6 +31,10 @@ const MusicPlayer = () => {
     } else {
       dispatch(playPause(false));
     }
+  };
+  const handleVolume = (e: React.ChangeEvent<HTMLInputElement>) => {
+    e.preventDefault();
+    setVolume(Number(e.target.value));
   };
   const handleNextSong = () => {
     dispatch(playPause(true));
@@ -94,7 +99,7 @@ const MusicPlayer = () => {
           setVolume={setVolume}
           min={0}
           max={1}
-          onChange={(e) => setVolume(e.target.value)}
+          onChange={handleVolume}
         />
       </div>
     </div>

@@ -1,4 +1,5 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
+import { HYDRATE } from "next-redux-wrapper";
 import { IArtist } from "../models/Artist.interface";
 import { Song } from "../models/Song.interface";
 import { SongsBySearch } from "../models/SongsBySearch.interface";
@@ -15,6 +16,11 @@ export const ShazamCoreApi = createApi({
       return headers;
     },
   }),
+  extractRehydrationInfo(action, { reducerPath }) {
+    if (action.type === HYDRATE) {
+      return action.payload[reducerPath];
+    }
+  },
   endpoints: (builder) => ({
     getTopCharts: builder.query<Song[], string>({
       query: () => "/charts/world",
@@ -52,4 +58,15 @@ export const {
   useGetSongsBySearchQuery,
   useGetSongsByCountryQuery,
   useGetSongsByGenreQuery,
+  util: { getRunningOperationPromises },
 } = ShazamCoreApi;
+
+export const {
+  getSongsByGenre,
+  getTopCharts,
+  getSongDetails,
+  getRelatedSongs,
+  getArtistDetails,
+  getSongsBySearch,
+  getSongsByCountry,
+} = ShazamCoreApi.endpoints;

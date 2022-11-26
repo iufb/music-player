@@ -3,4 +3,5 @@ export interface ArtistcardProps extends HTMLAttributes<HTMLDivElement> {
   image: string;
   name: string;
   artistId: string;
+  isSuccess: boolean;
 }

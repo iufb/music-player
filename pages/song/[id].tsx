@@ -1,3 +1,4 @@
+import { GetServerSideProps } from "next";
 import Head from "next/head";
 import Image from "next/image";
 import { useRouter } from "next/router";
@@ -6,9 +7,13 @@ import { Song } from "../../src/components/Song/Song";
 import { SongTitle } from "../../src/components/SongTitle/SongTitle";
 import { withLayout } from "../../src/layout/Layout";
 import {
+  getRelatedSongs,
+  getRunningOperationPromises,
+  getSongDetails,
   useGetRelatedSongsQuery,
   useGetSongDetailsQuery,
 } from "../../src/redux/services/shazamCore";
+import { wrapper } from "../../src/redux/store";
 
 const SongPage = () => {
   const { query } = useRouter();
@@ -79,3 +84,16 @@ const SongPage = () => {
 };
 
 export default withLayout(SongPage);
+
+export const getServerSideProps: GetServerSideProps =
+  wrapper.getServerSideProps((store) => async (ctx) => {
+    const id = ctx.params?.id;
+    if (typeof id === "string") {
+      store.dispatch(getRelatedSongs.initiate(id));
+      store.dispatch(getSongDetails.initiate(id));
+    }
+    await Promise.all(getRunningOperationPromises());
+    return {
+      props: {},
+    };
+  });

@@ -47,7 +47,7 @@ const Songcard = ({
         title={song.title}
         subtitle={song.subtitle}
         id={song.key}
-        artistid={song.artists[0].adamid}
+        artistid={song.artists ? song.artists[0].adamid : ""}
         size="md"
         className={`flex flex-col gap-4 justify-start w-full mt-5 ${
           activeSong.title == song.title && "text-screamingGreen"

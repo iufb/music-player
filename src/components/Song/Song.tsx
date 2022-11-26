@@ -35,7 +35,7 @@ export const Song = ({
         subtitle={song.subtitle}
         id={song.key}
         size="md"
-        artistid={song.artists[0].adamid}
+        artistid={song.artists ? song.artists[0].adamid : ""}
         className={` col-start-3 col-end-4 ${
           activeSong.title == song.title && "text-screamingGreen"
         }`}

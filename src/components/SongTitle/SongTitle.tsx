@@ -11,7 +11,7 @@ export const SongTitle = ({
   size = "md",
   ...props
 }: SongTitleProps): JSX.Element => (
-  <div className={`${className} w-[150px] lg:w-[16rem]  pl-4`} {...props}>
+  <div className={`${className} w-[150px] lg:w-[16rem] self-start`} {...props}>
     <Link href={`/song/${id}`}>
       <a href="">
         <p

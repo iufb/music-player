@@ -1,3 +1,4 @@
+import { GetServerSideProps } from "next";
 import Head from "next/head";
 import Image from "next/image";
 import { useRouter } from "next/router";
@@ -5,9 +6,13 @@ import { Error, Loader } from "../../src/components";
 import { Song } from "../../src/components/Song/Song";
 import { withLayout } from "../../src/layout/Layout";
 import {
+  getArtistDetails,
+  getRunningOperationPromises,
+  getSongsBySearch,
   useGetArtistDetailsQuery,
   useGetSongsBySearchQuery,
 } from "../../src/redux/services/shazamCore";
+import { wrapper } from "../../src/redux/store";
 
 const ArtistPage = () => {
   const { query, isReady } = useRouter();
@@ -17,7 +22,8 @@ const ArtistPage = () => {
     isLoading,
     isError,
   } = useGetArtistDetailsQuery(id);
-  const name = artistDetails?.artists[id].attributes.name;
+  const name =
+    artistDetails?.artists && artistDetails?.artists[id]?.attributes?.name;
   const { data: search } = useGetSongsBySearchQuery(name);
 
   if (isLoading && !isReady) return <Loader size="lg" />;
@@ -31,7 +37,7 @@ const ArtistPage = () => {
         <div className=" w-full h-80 flex items-center justify-start gap-10 pl-10  bg-gradient-to-b from-purpleHeart to-screamingGreen">
           {artistDetails && (
             <Image
-              src={artistDetails?.artists[id].attributes.artwork.url}
+              src={artistDetails?.artists[id]?.attributes?.artwork?.url}
               alt="image"
               width={250}
               height={250}
@@ -61,3 +67,16 @@ const ArtistPage = () => {
 };
 
 export default withLayout(ArtistPage);
+export const getServerSideProps: GetServerSideProps =
+  wrapper.getServerSideProps((store) => async (ctx) => {
+    const id = ctx.params?.id;
+    const search = ctx.params?.search;
+    if (typeof id === "string" && typeof search === "string") {
+      store.dispatch(getArtistDetails.initiate(id));
+      store.dispatch(getSongsBySearch.initiate(search));
+    }
+    await Promise.all(getRunningOperationPromises());
+    return {
+      props: {},
+    };
+  });

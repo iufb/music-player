@@ -1,12 +1,18 @@
+import { GetServerSideProps } from "next";
 import Head from "next/head";
 import React from "react";
 import { Error, Loader } from "../src/components";
 import Artistcard from "../src/components/ArtistCard/ArtistCard";
 import { withLayout } from "../src/layout/Layout";
-import { useGetTopChartsQuery } from "../src/redux/services/shazamCore";
+import {
+  getRunningOperationPromises,
+  getTopCharts,
+  useGetTopChartsQuery,
+} from "../src/redux/services/shazamCore";
+import { wrapper } from "../src/redux/store";
 
 const TopArtists = () => {
-  const { data, isLoading, isError } = useGetTopChartsQuery("");
+  const { data, isLoading, isError, isSuccess } = useGetTopChartsQuery("");
   if (isLoading) return <Loader size="lg" />;
   if (isError) return <Error />;
 
@@ -20,10 +26,11 @@ const TopArtists = () => {
         {data &&
           data.map((song) => (
             <Artistcard
+              isSuccess={isSuccess}
               key={song.key}
               image={song?.images?.background}
               name={song?.subtitle}
-              artistId={song?.artists[0]?.adamid}
+              artistId={song.artists ? song?.artists[0]?.adamid : ""}
             />
           ))}
       </div>
@@ -32,3 +39,12 @@ const TopArtists = () => {
 };
 
 export default withLayout(TopArtists);
+
+export const getServerSideProps: GetServerSideProps =
+  wrapper.getServerSideProps((store) => async (ctx) => {
+    store.dispatch(getTopCharts.initiate(""));
+    await Promise.all(getRunningOperationPromises());
+    return {
+      props: {},
+    };
+  });
