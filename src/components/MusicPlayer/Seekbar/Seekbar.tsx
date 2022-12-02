@@ -1,3 +1,4 @@
+import React from "react";
 import { SeekbarProps } from "./Seekbar.props";
 
 export const Seekbar = ({

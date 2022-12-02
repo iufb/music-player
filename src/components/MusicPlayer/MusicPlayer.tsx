@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { memo, useCallback, useEffect, useState } from "react";
 import { useAppDispatch, useAppSelector } from "../../helpers/hooks/redux";
 import { useLocalStorage } from "../../helpers/hooks/useLocalStorage";
 import {
@@ -17,20 +17,31 @@ const MusicPlayer = () => {
     useAppSelector((state) => state.player);
   const [duration, setDuration] = useState<number>(0);
   const [seekTime, setSeekTime] = useState<number>(0);
-  const [appTime, setAppTime] = useLocalStorage(0, "appTime");
+  const [appTime, setAppTime] = useState<number>(0);
   const [volume, setVolume] = useLocalStorage(0, "volume");
   const [repeat, setRepeat] = useState<boolean>(false);
   const [shuffle, setShuffle] = useState<boolean>(false);
   const dispatch = useAppDispatch();
+  console.log(seekTime, appTime);
   useEffect(() => {
     if (currentSongs.length && isPlaying == true) dispatch(playPause(true));
   }, [currentSongs?.length, dispatch, currentIndex, isPlaying]);
-  const handlePlayPause = () => {
+  const handlePlayPause = useCallback(() => {
     if (!isPlaying) {
       dispatch(playPause(true));
     } else {
       dispatch(playPause(false));
     }
+  }, [dispatch, isPlaying]);
+  const handleSeekTime = (e: React.ChangeEvent<HTMLInputElement>) => {
+    e.preventDefault();
+    setSeekTime(Number(e.target.value));
+  };
+  const handleTimeUpdate = (e: React.ChangeEvent<HTMLAudioElement>) => {
+    setAppTime(e.target.currentTime);
+  };
+  const handleLoadedData = (e: React.ChangeEvent<HTMLAudioElement>) => {
+    setDuration(e.target.duration);
   };
   const handleVolume = (e: React.ChangeEvent<HTMLInputElement>) => {
     e.preventDefault();
@@ -55,7 +66,7 @@ const MusicPlayer = () => {
     }
   };
   return (
-    <div className="w-full lg:px-10 gap-6 z-50  h-full backdrop-blur-sm bg-opacity-80 bg-white/5 bg-gray-400 grid grid-cols-musicPlayer items-center">
+    <div className="w-full rounded-t-3xl lg:px-10 gap-6 z-50  h-full backdrop-blur-sm bg-opacity-80 bg-white/5 bg-gray-400 grid grid-cols-musicPlayer items-center">
       <div className="  h-full items-center col-start-1 col-end-2 hidden md:flex">
         <Track
           isPlaying={isPlaying}
@@ -80,8 +91,8 @@ const MusicPlayer = () => {
           activeSong={activeSong}
           isPlaying={isPlaying}
           onEnded={handleNextSong}
-          onTimeUpdate={(e) => setAppTime(e.target.currentTime)}
-          onLoadedData={(e) => setDuration(e.target.duration)}
+          onTimeUpdate={handleTimeUpdate}
+          onLoadedData={handleLoadedData}
           volume={volume}
           seekTime={seekTime}
         />
@@ -90,7 +101,7 @@ const MusicPlayer = () => {
           max={duration}
           value={appTime}
           setSeekTime={setSeekTime}
-          onInput={(e) => setSeekTime(e.target.value)}
+          onInput={handleSeekTime}
         />
       </div>
       <div className="col-start-3 col-end-4 hidden lg:block">

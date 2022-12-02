@@ -7,9 +7,11 @@ import { withLayout } from "../src/layout/Layout";
 import { useGetSongsByCountryQuery } from "../src/redux/services/shazamCore";
 
 const AroundYou = () => {
-  const [country, setCountry] = useState<string>("12");
+  const [country, setCountry] = useState<string>("");
   const [isFetching, setIsFetching] = useState<boolean>(true);
-  const { data, isLoading, isError } = useGetSongsByCountryQuery(country);
+  const { data, isLoading, isError } = useGetSongsByCountryQuery(
+    country || "KZ"
+  );
   const { isPlaying, activeSong } = useAppSelector((state) => state.player);
   useEffect(() => {
     axios
@@ -17,7 +19,7 @@ const AroundYou = () => {
         `https://geo.ipify.org/api/v2/country?apiKey=${process.env.NEXT_PUBLIC_COUNTRY_API_KEY}`
       )
       .then((res) => setCountry(res.data.location.country))
-      .catch((error) => console.log(error))
+      .catch((error) => console.log(error, "Error occured while fetch data"))
       .finally(() => setIsFetching(false));
   }, [country]);
   if (isLoading && isFetching) return <Loader size="lg" />;
