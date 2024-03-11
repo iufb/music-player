@@ -104,7 +104,7 @@ const MusicPlayer = () => {
           onInput={handleSeekTime}
         />
       </div>
-      <div className="order-2 ml-10 md:order-3">
+      <div className="order-2 ml-10 md:order-3 md:justify-self-end">
         <Volume
           value={volume}
           setVolume={setVolume}
