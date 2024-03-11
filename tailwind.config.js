@@ -15,7 +15,8 @@ module.exports = {
       gridTemplateColumns: {
         search: "auto 1fr",
         songBar: "20px 80px auto 40px",
-        musicPlayer: "auto 1fr auto",
+        musicPlayerDT: "auto 1fr auto",
+        musicPlayerM: "1fr",
       },
       animation: {
         "spin-slow": "spin 3s linear infinite",

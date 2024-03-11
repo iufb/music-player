@@ -15,19 +15,17 @@ const Layout = memo(({ children }: LayoutProps): JSX.Element => {
       <Sidebar className={`${styles.sidebar}`} />
       <div className={`${styles.main} ${isActive && "pb-24"}`}>{children}</div>
       <TopSide className={`${styles.topside} ${isActive && "pb-24"}`} />
-      {isActive && (
-        <div
-          className={`${styles.footer} fixed bottom-0 w-full h-24 m-0 rounded-2xl`}
-        >
-          <MusicPlayer />
-        </div>
-      )}
+      <div
+        className={`${styles.footer} fixed bottom-0 w-full h-24 m-0 rounded-2xl`}
+      >
+        <MusicPlayer />
+      </div>
     </div>
   );
 });
 
 export const withLayout = <T extends Record<string, unknown>>(
-  Component: FunctionComponent<T>
+  Component: FunctionComponent<T>,
 ) => {
   return function Wrapper(props: T) {
     return (

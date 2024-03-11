@@ -66,15 +66,15 @@ const MusicPlayer = () => {
     }
   };
   return (
-    <div className="w-full rounded-t-3xl lg:px-10 gap-6 z-50  h-full backdrop-blur-sm bg-opacity-80 bg-white/5 bg-gray-400 grid grid-cols-musicPlayer items-center">
-      <div className="  h-full items-center col-start-1 col-end-2 hidden md:flex">
+    <div className="w-full rounded-t-3xl lg:px-10 gap-0 z-50  h-full backdrop-blur-sm bg-opacity-80 bg-white/5 bg-gray-400 grid grid-cols-1 md:grid-cols-3 items-center ">
+      <div className="  h-full  items-center hidden md:flex order-1 ">
         <Track
           isPlaying={isPlaying}
           isActive={isActive}
           activeSong={activeSong}
         />
       </div>
-      <div className="flex flex-col  items-center col-start-2 col-end-3">
+      <div className="flex flex-col  items-center order-3 md:order-2  ">
         <Controls
           repeat={repeat}
           shuffle={shuffle}
@@ -104,7 +104,7 @@ const MusicPlayer = () => {
           onInput={handleSeekTime}
         />
       </div>
-      <div className="col-start-3 col-end-4 hidden lg:block">
+      <div className="order-2 ml-10 md:order-3">
         <Volume
           value={volume}
           setVolume={setVolume}

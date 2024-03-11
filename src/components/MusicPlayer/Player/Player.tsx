@@ -30,7 +30,7 @@ export const Player = ({
   return (
     <audio
       ref={ref}
-      src={activeSong.hub.actions[1].uri}
+      src={activeSong.hub.actions[1]?.uri ?? null}
       loop={repeat}
       onEnded={onEnded}
       onTimeUpdate={onTimeUpdate}
